@@ -238,6 +238,18 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
 
+  {
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    ft = { 'markdown' },
+    build = function()
+      vim.fn['mkdp#util#install']()
+    end,
+    vim.keymap.set('n', '<leader>mm', '<cmd>MarkdownPreview<CR>'),
+    vim.keymap.set('n', '<leader>ms', '<cmd>MarkdownPreviewStop<CR>'),
+    vim.keymap.set('n', '<leader>mt', '<cmd>MarkdownPreviewToggle<CR>'),
+  },
+
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
