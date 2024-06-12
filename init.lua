@@ -53,6 +53,12 @@ vim.opt.splitbelow = true
 vim.opt.list = true
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
+-- Changing tabs to be 2 spaces
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
+vim.bo.softtabstop = 2
+
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
 
@@ -151,6 +157,54 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require("lazy").setup({
+
+	{
+		"vhyrro/luarocks.nvim",
+		priority = 1000,
+		config = true,
+	},
+
+	{
+		"nvim-neorg/neorg",
+		ft = "norg",
+		dependencies = {
+			"luarocks.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-treesitter/nvim-treesitter-textobjects",
+			"nvim-cmp",
+			"nvim-lua/plenary.nvim",
+		},
+
+		lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+		version = "*", -- Pin Neorg to the latest stable release
+		config = true,
+		build = ":Neorg sync-parsers",
+		cmd = "Neorg",
+		opts = {
+			load = {
+				["core.defaults"] = {},
+				["core.completion"] = { config = { engine = "nvim-cmp", name = "[Norg]" } },
+				["core.integrations.nvim-cmp"] = {},
+				["core.concealer"] = { config = { icon_preset = "diamond" } },
+				["core.keybinds"] = {
+					config = {
+						default_keybinds = true,
+						neorg_leader = "<Leader>o",
+					},
+				},
+				["core.dirman"] = {
+					config = {
+						workspaces = {
+							notes = "/mnt/c/Users/lewis/OneDrive/Notes/",
+						},
+						hook = function(keybinds)
+							keybinds.remap_event("norg", "n", "d", "core.qol.todo_items.todo.task_done")
+						end,
+					},
+				},
+			},
+		},
+	},
 
 	{
 		"stevearc/oil.nvim",
@@ -477,31 +531,6 @@ require("lazy").setup({
 			{ "j-hui/fidget.nvim", opts = {} },
 		},
 		config = function()
-			-- Brief Aside: **What is LSP?**
-			--
-			-- LSP is an acronym you've probably heard, but might not understand what it is.
-			--
-			-- LSP stands for Language Server Protocol. It's a protocol that helps editors
-			-- and language tooling communicate in a standardized fashion.
-			--
-			-- In general, you have a "server" which is some tool built to understand a particular
-			-- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc). These Language Servers
-			-- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-			-- processes that communicate with some "client" - in this case, Neovim!
-			--
-			-- LSP provides Neovim with features like:
-			--  - Go to definition
-			--  - Find references
-			--  - Autocompletion
-			--  - Symbol Search
-			--  - and more!
-			--
-			-- Thus, Language Servers are external tools that must be installed separately from
-			-- Neovim. This is where `mason` and related plugins come into play.
-			--
-			-- If you're wondering about lsp vs treesitter, you can check out the wonderfully
-			-- and elegantly composed help section, :help lsp-vs-treesitter
-
 			--  This function gets run when an LSP attaches to a particular buffer.
 			--    That is to say, every time a new file is opened that is associated with
 			--    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
@@ -601,7 +630,7 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
-				-- clangd = {},
+				clangd = {},
 				-- gopls = {},
 				-- pyright = {},
 				-- rust_analyzer = {},
@@ -790,10 +819,7 @@ require("lazy").setup({
 		end,
 	},
 
-	{ -- You can easily change to a different colorscheme.
-		-- Change the name of the colorscheme plugin below, and then
-		-- change the command in the config to whatever the name of that colorscheme is
-		--
+	{
 		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`
 		"projekt0n/github-nvim-theme",
 		lazy = false, -- make sure we load this during startup if it is your main colorscheme
@@ -808,7 +834,11 @@ require("lazy").setup({
 	},
 
 	-- Highlight todo, notes, etc in comments
-	{ "folke/todo-comments.nvim", dependencies = { "nvim-lua/plenary.nvim" }, opts = { signs = false } },
+	{
+		"folke/todo-comments.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		opts = { signs = false },
+	},
 
 	{ -- Collection of various small independent plugins/modules
 		"echasnovski/mini.nvim",
