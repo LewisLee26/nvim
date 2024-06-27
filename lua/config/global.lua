@@ -6,6 +6,17 @@ vim.opt.termguicolors = true
 -- show insert mode in terminal buffers
 vim.api.nvim_set_hl(0, 'TermCursor', { fg = '#A6E3A1', bg = '#A6E3A1' })
 
+vim.api.nvim_create_augroup('_terminal', { clear = true })
+vim.api.nvim_create_autocmd('TermOpen', {
+  command = 'setlocal winhighlight=Normal:NormalFloat',
+  group = '_terminal',
+})
+
+vim.api.nvim_set_hl(0, 'Chicken', {
+  bg = '#f0f0f0',
+  fg = 'fg',
+})
+
 -- disable fill chars (the ~ after the buffer)
 vim.o.fillchars = 'eob: '
 

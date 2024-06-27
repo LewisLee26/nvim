@@ -178,7 +178,7 @@ return {
   { -- statusline
     -- PERF: I found this to slow down the editor
     'nvim-lualine/lualine.nvim',
-    enabled = false,
+    enabled = true,
     config = function()
       local function macro_recording()
         local reg = vim.fn.reg_recording()

@@ -134,6 +134,9 @@ nmap('n', 'nzz')
 nmap('<c-d>', '<c-d>zz')
 nmap('<c-u>', '<c-u>zz')
 
+-- backwards end of word
+nmap('<s-e>', 'ge')
+
 -- move between splits and tabs
 -- nmap('<c-h>', '<c-w>h')
 -- nmap('<c-l>', '<c-w>l')
