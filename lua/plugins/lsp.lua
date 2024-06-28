@@ -1,6 +1,6 @@
+-- Neovim needs to be run with sudo to install some LSPs
 return {
   {
-
     -- for lsp features in code cells / embedded code
     'jmbuhr/otter.nvim',
     dev = false,
@@ -109,21 +109,6 @@ return {
         root_dir = util.root_pattern('.git', '.marksman.toml', '_quarto.yml'),
       }
 
-      lspconfig.cssls.setup {
-        capabilities = capabilities,
-        flags = lsp_flags,
-      }
-
-      lspconfig.html.setup {
-        capabilities = capabilities,
-        flags = lsp_flags,
-      }
-
-      lspconfig.emmet_language_server.setup {
-        capabilities = capabilities,
-        flags = lsp_flags,
-      }
-
       lspconfig.yamlls.setup {
         capabilities = capabilities,
         flags = lsp_flags,
@@ -194,40 +179,16 @@ return {
         },
       }
 
-      lspconfig.julials.setup {
-        capabilities = capabilities,
-        flags = lsp_flags,
-      }
-
       lspconfig.bashls.setup {
         capabilities = capabilities,
         flags = lsp_flags,
         filetypes = { 'sh', 'bash' },
       }
 
-      -- Add additional languages here.
-      -- See `:h lspconfig-all` for the configuration.
-      -- Like e.g. Haskell:
-      -- lspconfig.hls.setup {
-      --   capabilities = capabilities,
-      --   flags = lsp_flags
-      -- }
-
       lspconfig.clangd.setup {
         capabilities = capabilities,
         flags = lsp_flags,
       }
-
-      -- lspconfig.rust_analyzer.setup{
-      --   capabilities = capabilities,
-      --   settings = {
-      --     ['rust-analyzer'] = {
-      --       diagnostics = {
-      --         enable = false;
-      --       }
-      --     }
-      --   }
-      -- }
 
       -- See https://github.com/neovim/neovim/issues/23291
       -- disable lsp watcher.
@@ -248,6 +209,7 @@ return {
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
               diagnosticMode = 'workspace',
+              pythonPath = '~/miniconda3/envs/nvim/bin/python3',
             },
           },
         },

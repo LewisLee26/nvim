@@ -1,26 +1,23 @@
 -- plugins for notetaking and knowledge management
 
 return {
-
-  {
-    'nvim-neorg/neorg',
-    enabled = false,
-    config = function()
-      require('neorg').setup {}
-    end,
-  },
-
   {
     'jakewvincent/mkdnflow.nvim',
     enabled = true,
     config = function()
       local mkdnflow = require 'mkdnflow'
-      mkdnflow.setup {}
+      mkdnflow.setup {
+        mappings = {
+          MkdnIncreaseHeading = { 'n', '<leader>+' },
+          MkdnDecreaseHeading = { 'n', '<leader>-' },
+        },
+      }
     end,
   },
 
   {
     'MeanderingProgrammer/markdown.nvim',
+    enabled = false,
     name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
@@ -30,6 +27,19 @@ return {
         latex_converter = 'latex2text',
       }
     end,
+  },
+
+  {
+    'iamcco/markdown-preview.nvim',
+    enabled = true,
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    ft = { 'markdown' },
+    build = function()
+      vim.fn['mkdp#util#install']()
+    end,
+    vim.keymap.set('n', '<localleader>mt', ':MarkdownPreviewToggle<CR>', { silent = true, desc = '' }),
+    vim.keymap.set('n', '<localleader>mp', ':MarkdownPreview<CR>', { silent = true, desc = '' }),
+    vim.keymap.set('n', '<localleader>ms', ':MarkdownPreviewStop<CR>', { silent = true, desc = '' }),
   },
 
   {
